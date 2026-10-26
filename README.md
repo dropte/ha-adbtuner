@@ -22,6 +22,12 @@ For each ADBTuner **tuner** (streaming device):
 
 For the **server**: a version sensor and, with a guide, `calendar.adbtuner_guide`: every non-idle programme on your ADBTuner channels, usable in the calendar dashboard and in automations ("notify me 10 minutes before any match with *Arsenal* in the title").
 
+## Tuning from Home Assistant
+
+Each tuner has a **Tune** select listing what's airing now (from the guide) plus channels the guide doesn't cover, and a **Stop** button. There are also `adbtuner.tune` / `adbtuner.stop` actions for automations (`channel` accepts a number like `2306`, an M3U id or a channel name; `duration` defaults to 4 hours).
+
+ADBTuner only tunes while a client reads the stream, so Home Assistant opens the stream and discards it until you press Stop or the duration ends. That keeps the device on the channel so you can watch the HDMI encoder directly (for example as a camera in a dashboard) without an IPTV app open. While held, the tuner is busy for Channels DVR and other clients. With several tuners, ADBTuner picks a free one by priority.
+
 ## Guide support (optional)
 
 Give the integration an **XMLTV guide URL** whose channel ids match your ADBTuner channels' **M3U ids**. Setups built with [FruitDeepLinks](https://github.com/kineticman/FruitDeepLinks) ADB lanes work out of the box: use `http://<fdl-host>:6655/out/adb_lanes.xml` and set each ADBTuner channel's M3U id to the lane's `tvg-id` (e.g. `sportscenter01`). Any other XMLTV source works the same way. Placeholder entries such as `Idle` / `Stand By` are ignored.

@@ -35,22 +35,41 @@
   },
   "entity": {
     "binary_sensor": {
-      "in_use": { "name": "In use" },
-      "device_connected": { "name": "Device connected" },
-      "stream_connected": { "name": "Stream connected" }
+      "in_use": {
+        "name": "In use"
+      },
+      "device_connected": {
+        "name": "Device connected"
+      },
+      "stream_connected": {
+        "name": "Stream connected"
+      }
     },
     "button": {
-      "unlock": { "name": "Unlock tuner" },
-      "retry": { "name": "Retry tuner" }
+      "unlock": {
+        "name": "Unlock tuner"
+      },
+      "retry": {
+        "name": "Retry tuner"
+      },
+      "stop": {
+        "name": "Stop"
+      }
     },
     "calendar": {
-      "guide": { "name": "Guide" }
+      "guide": {
+        "name": "Guide"
+      }
     },
     "image": {
-      "last_tune_screenshot": { "name": "Last tune screenshot" }
+      "last_tune_screenshot": {
+        "name": "Last tune screenshot"
+      }
     },
     "sensor": {
-      "version": { "name": "Version" },
+      "version": {
+        "name": "Version"
+      },
       "status": {
         "name": "Status",
         "state": {
@@ -60,9 +79,50 @@
           "maintenance": "Maintenance"
         }
       },
-      "channel": { "name": "Channel" },
-      "last_tune": { "name": "Last tune" },
-      "now_playing": { "name": "Now playing" }
+      "channel": {
+        "name": "Channel"
+      },
+      "last_tune": {
+        "name": "Last tune"
+      },
+      "now_playing": {
+        "name": "Now playing"
+      }
+    },
+    "select": {
+      "tune": {
+        "name": "Tune"
+      }
+    }
+  },
+  "services": {
+    "tune": {
+      "name": "Tune channel",
+      "description": "Tune a tuner to a channel and keep it there (Home Assistant holds the stream open), e.g. to watch the encoder directly.",
+      "fields": {
+        "device_id": {
+          "name": "Tuner",
+          "description": "The ADBTuner tuner device."
+        },
+        "channel": {
+          "name": "Channel",
+          "description": "Channel number (e.g. 2306), M3U id (e.g. peacock_web06) or exact channel name."
+        },
+        "duration": {
+          "name": "Duration",
+          "description": "Release the tuner after this long. Default 4 hours."
+        }
+      }
+    },
+    "stop": {
+      "name": "Stop",
+      "description": "Release a tuner that Home Assistant is holding.",
+      "fields": {
+        "device_id": {
+          "name": "Tuner",
+          "description": "The ADBTuner tuner device."
+        }
+      }
     }
   }
 }

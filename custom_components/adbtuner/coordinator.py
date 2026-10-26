@@ -70,6 +70,18 @@ class ADBTunerCoordinator(DataUpdateCoordinator[ADBTunerData]):
             channels=self._channels,
         )
 
+    def find_channel(self, query: str) -> dict[str, Any] | None:
+        """Match a channel by number, M3U id, id or (case-insensitive) name."""
+        query = str(query).strip()
+        # Accept select-style labels such as "2306 · Chelsea vs. Tottenham".
+        number = query.split(" ", 1)[0]
+        channels = self.data.channels.values() if self.data else ()
+        for c in channels:
+            if str(c.get("number")) in (query, number) or c.get("m3u_id") == query or str(c.get("id")) == query:
+                return c
+        lowered = query.lower()
+        return next((c for c in channels if str(c.get("name", "")).lower() == lowered), None)
+
 
 class GuideCoordinator(DataUpdateCoordinator[dict[str, list[Programme]]]):
     """Downloads and parses an XMLTV guide matching ADBTuner's channel ids."""

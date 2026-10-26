@@ -1,0 +1,24 @@
+tune:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: adbtuner
+    channel:
+      required: true
+      example: "2306"
+      selector:
+        text:
+    duration:
+      default:
+        hours: 4
+      selector:
+        duration:
+stop:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: adbtuner

@@ -12,6 +12,7 @@ from . import ADBTunerConfigEntry
 from .api import ADBTunerError
 from .coordinator import ADBTunerCoordinator
 from .entity import ADBTunerTunerEntity
+from .holder import StreamHolder
 
 
 async def async_setup_entry(
@@ -21,7 +22,11 @@ async def async_setup_entry(
     async_add_entities(
         entity
         for tuner_id in coordinator.data.tuners
-        for entity in (UnlockButton(coordinator, tuner_id), RetryButton(coordinator, tuner_id))
+        for entity in (
+            StopButton(coordinator, tuner_id, entry.runtime_data.holder),
+            UnlockButton(coordinator, tuner_id),
+            RetryButton(coordinator, tuner_id),
+        )
     )
 
 
@@ -54,3 +59,15 @@ class RetryButton(_TunerButton):
 
     async def async_press(self) -> None:
         await self._call(self.coordinator.client.retry_tuner)
+
+
+class StopButton(ADBTunerTunerEntity, ButtonEntity):
+    """Stop a stream Home Assistant is holding, freeing the tuner."""
+
+    def __init__(self, coordinator: ADBTunerCoordinator, tuner_id: int, holder: StreamHolder) -> None:
+        super().__init__(coordinator, tuner_id, "stop")
+        self.holder = holder
+
+    async def async_press(self) -> None:
+        await self.holder.stop(self.tuner_id)
+        await self.coordinator.async_request_refresh()
