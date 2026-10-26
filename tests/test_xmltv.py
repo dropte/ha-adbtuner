@@ -3,12 +3,14 @@
 from datetime import datetime, timezone
 import importlib.util
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 
 # Load xmltv.py directly so the tests don't need Home Assistant installed.
 _spec = importlib.util.spec_from_file_location("xmltv", ROOT / "custom_components/adbtuner/xmltv.py")
 xmltv = importlib.util.module_from_spec(_spec)
+sys.modules["xmltv"] = xmltv  # dataclasses needs the module registered (Python 3.13+)
 _spec.loader.exec_module(xmltv)
 
 SAMPLE = (ROOT / "tests/fixtures/sample_guide.xml").read_bytes()
